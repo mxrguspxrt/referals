@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 // Assets
-import 'assets/styles/App.css'
+import 'assets/styles/apps/Referals.css'
 
 // Pages
 import IndexPage from 'pages/Index'
@@ -48,7 +48,6 @@ class Referals extends Component {
         </ConnectedRouter>
       </Provider>
     )
-    console.log({ referalsView })
 
     return referalsView
   }

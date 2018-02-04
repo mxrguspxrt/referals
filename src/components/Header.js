@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import 'assets/styles/Header.css'
+import 'assets/styles/components/Header.css'
 
 class Header extends Component {
 
   render() {
     return (
-      <div className='Header'>
+      <div className='header'>
         <Link to='/' className='site'>
           Referals
         </Link>
         <Link to='/profile' className='my-profile'>
           My profile
         </Link>
-        <Link to='/login' className='log-in'>
+        <Link to='/login' className='login'>
           Log in
         </Link>
       </div>
