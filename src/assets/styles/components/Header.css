@@ -1,9 +1,9 @@
-.header {
+.header-component {
   background-color: #89C2C1;
   color: #fff;
 }
 
-.header a {
+.header-component a {
   padding: 20px;
   display: inline-block;
   text-decoration: none;

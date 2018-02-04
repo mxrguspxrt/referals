@@ -6,7 +6,7 @@ class Header extends Component {
 
   render() {
     return (
-      <div className='header'>
+      <div className='header-component'>
         <Link to='/' className='site'>
           Referals
         </Link>

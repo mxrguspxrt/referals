@@ -1,6 +1,8 @@
 * {
   padding: 0;
   margin: 0;
+  font-weight: 100;
+  box-sizing: border-box;
 }
 
 .page-content {
@@ -9,8 +11,8 @@
 }
 
 .small-title {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   font-size: 1.2em;
 }
 
@@ -27,4 +29,51 @@
   color: #fff;
   padding: 20px;
   display: inline-block;
+}
+
+.table {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  display: table;
+}
+
+.table .header {
+}
+
+.table .header, .table .row {
+  display: table-row;
+}
+
+.table .header .cell {
+  color: #89C2C1;
+}
+
+.table .cell {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 4px;
+  margin: 5px;
+}
+
+textarea, input, button {
+  outline: none;
+  padding: 20px;
+  text-align: center;
+}
+
+textarea, input {
+  border: 1px solid #89C2C1;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+h1 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }

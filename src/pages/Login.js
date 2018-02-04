@@ -13,7 +13,7 @@ class Login extends BasePage {
           Please log in to share referals.
         </div>
         <div className='success-button'>
-          Log in using Twitter.
+          Log in using Twitter
         </div>
       </div>
     )
