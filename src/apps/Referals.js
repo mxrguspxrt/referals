@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import Header from 'components/Header'
 
 // Assets
-import logo from 'assets/images/logo.svg'
 import 'assets/styles/App.css'
 
 // Pages
@@ -11,12 +9,15 @@ import LoginPage from 'pages/Login'
 import ProfilePage from 'pages/Profile'
 import InvitePage from 'pages/Invite'
 
+// Components
+import Header from 'components/Header'
+
 // Redux, store and routing
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import createHistory from 'history/createBrowserHistory'
 import { Route } from 'react-router'
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
 import enabledReducers from 'reducers/All'
 
 const history = createHistory()
@@ -38,6 +39,7 @@ class Referals extends Component {
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <div>
+            <Header />
             <Route exact path="/" component={IndexPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/profile" component={ProfilePage} />
