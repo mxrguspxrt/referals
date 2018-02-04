@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import 'assets/styles/Header.css'
 
 class Header extends Component {
 
   render() {
     return (
-      <div className="Header">
-        <div className="site">
+      <div className='Header'>
+        <Link to='/' className='site'>
           Referals
-        </div>
-        <div className="my-profile">
+        </Link>
+        <Link to='/profile' className='my-profile'>
           My profile
-        </div>
-        <div className="log-in">
+        </Link>
+        <Link to='/login' className='log-in'>
           Log in
-        </div>
+        </Link>
       </div>
     )
   }
