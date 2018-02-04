@@ -1,12 +1,23 @@
 import React from 'react'
 import BasePage from 'pages/BasePage'
+import { connect } from 'react-redux'
 
 class Profile extends BasePage {
 
   render() {
+    const user = this.props.user
+
+    if (!user) {
+      return (
+        <div className='page-content'>
+          Please log in to see your profile.
+        </div>
+      )
+    }
+
     return (
       <div className='page-content'>
-        <h1>Kitty Cat</h1>
+        <h1>{ user.displayName }</h1>
         <div className='big-title'>
           To invite followers with your referal, share following link.
         </div>
@@ -22,4 +33,10 @@ class Profile extends BasePage {
 
 }
 
-export default Profile
+function mapStateToProps(state) {
+  return {
+    user: state.login.user
+  }
+}
+
+export default connect(mapStateToProps)(Profile)

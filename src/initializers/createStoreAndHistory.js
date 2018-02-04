@@ -21,6 +21,8 @@ const store = createStore(
   applyMiddleware(appSagaMiddleware)
 )
 
+window.store = store
+
 appSagaMiddleware.run(enabledSagas)
 
 export default function() {

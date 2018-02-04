@@ -18,6 +18,10 @@ class BaseComponent extends Component {
     return store
   }
 
+  getState() {
+    return this.getStore().getState()
+  }
+
   render() {
     return (
       <div className="base-component">

@@ -1,5 +1,5 @@
-const AllReducers = {
+import login from 'reducers/login'
 
+export default {
+  login
 }
-
-export default AllReducers
