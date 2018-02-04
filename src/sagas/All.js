@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import firebase from 'firebase'
 import createFirebaseConnection from 'initializers/createFirebaseConnection'
 

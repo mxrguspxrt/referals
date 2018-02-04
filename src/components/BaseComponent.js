@@ -10,6 +10,10 @@ class BaseComponent extends Component {
     store.dispatch(params)
   }
 
+  getHistory() {
+    return history
+  }
+
   getStore() {
     return store
   }
