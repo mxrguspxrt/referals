@@ -12,7 +12,7 @@ class Profile extends BasePage {
         <div className='big-title'>
           To invite followers with your referal, share following link.
         </div>
-        <input value='234abc' />
+        <input value='referals.wave.ee/invite/xweoi3' />
         <h1>Kitty Cat</h1>
         <h2>Registered with referal</h2>
         abcd4g
