@@ -6,14 +6,11 @@ class Profile extends BasePage {
   render() {
     return (
       <div className='page-content'>
-        <div className='small-title'>
-          This is your profile page.
-        </div>
+        <h1>Kitty Cat</h1>
         <div className='big-title'>
           To invite followers with your referal, share following link.
         </div>
         <input value='referals.wave.ee/invite/xweoi3' />
-        <h1>Kitty Cat</h1>
         <h2>Registered with referal</h2>
         abcd4g
         <h2>Followers (3)</h2>

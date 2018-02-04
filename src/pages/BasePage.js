@@ -1,14 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
+import BaseComponent from 'components/BaseComponent'
 
-class BasePage extends Component {
 
-  render() {
-    return (
-      <div className="BasePage">
-        This is BasePage default.
-      </div>
-    )
-  }
+class BasePage extends BaseComponent {
 
 }
 

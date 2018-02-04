@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
+import BaseComponent from 'components/BaseComponent'
 import { Link } from 'react-router-dom'
 import 'assets/styles/components/Header.css'
 
-class Header extends Component {
+class Header extends BaseComponent {
 
   render() {
     return (

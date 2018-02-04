@@ -1,5 +1,5 @@
 .header-component {
-  background-color: #89C2C1;
+  background-color: #4A90E2;
   color: #fff;
 }
 
@@ -8,4 +8,12 @@
   display: inline-block;
   text-decoration: none;
   color: #fff;
+}
+
+.header-component .login {
+  float: right;
+}
+
+.header-component::after {
+  clear: both;
 }

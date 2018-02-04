@@ -12,26 +12,15 @@ import InvitePage from 'pages/Invite'
 // Components
 import Header from 'components/Header'
 
-// Redux, store and routing
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import createHistory from 'history/createBrowserHistory'
+// Redux, store, sagas & routing
+import createStoreAndHistory from 'initializers/createStoreAndHistory'
+import { ConnectedRouter } from 'react-router-redux'
 import { Route } from 'react-router'
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
-import enabledReducers from 'reducers/All'
+import { Provider } from 'react-redux'
 
-const history = createHistory()
-const middleware = routerMiddleware(history)
+const { store, history } = createStoreAndHistory()
 
-const store = createStore(
-  combineReducers({
-    ...enabledReducers,
-    router: routerReducer
-  }),
-  applyMiddleware(middleware)
-)
-
-
+// Render Referals app
 class Referals extends Component {
 
   render() {
