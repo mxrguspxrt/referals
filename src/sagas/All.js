@@ -5,10 +5,11 @@ import { push } from 'react-router-redux'
 
 const authProvider = new firebase.auth.TwitterAuthProvider()
 const reduxSagaFirebase = createFirebaseConnection()
+const auth = reduxSagaFirebase.auth
 
 function * login() {
   try {
-    const data = yield call(reduxSagaFirebase.auth.signInWithPopup, authProvider)
+    const data = yield call(auth.signInWithPopup, authProvider)
     yield put({
       type: 'LOGIN_SUCCESS',
       data: data
@@ -25,8 +26,7 @@ function * login() {
 
 function * logout() {
   try {
-    const data = yield call(reduxSagaFirebase.auth.signOut)
-    console.log("logout success", data)
+    const data = yield call(auth.signOut)
     yield put({
       type: 'LOGOUT_SUCCESS',
       data: data
@@ -43,7 +43,7 @@ function * logout() {
 }
 
 function * syncUser() {
-  const channel = yield call(reduxSagaFirebase.auth.channel)
+  const channel = yield call(auth.channel)
 
   while (true) {
     const { user } = yield take(channel)
