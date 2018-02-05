@@ -34,7 +34,7 @@ function login(state = initialState, action = {}) {
         ...state,
         loading: false
       }
-    case 'SYNC_USER':
+    case 'SYNC_USER_AUTH':
       return {
         ...state,
         loggedIn: action.user != null,

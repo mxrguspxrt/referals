@@ -1,11 +1,11 @@
-import { call, put, takeEvery, take, fork } from 'redux-saga/effects'
+import { call, put, takeEvery, take, fork, select } from 'redux-saga/effects'
 import firebase from 'firebase'
 import createFirebaseConnection from 'initializers/createFirebaseConnection'
 import { push } from 'react-router-redux'
 
 const authProvider = new firebase.auth.TwitterAuthProvider()
-const reduxSagaFirebase = createFirebaseConnection()
-const auth = reduxSagaFirebase.auth
+const rsf = createFirebaseConnection()
+const auth = rsf.auth
 
 function * login() {
   try {
@@ -25,20 +25,25 @@ function * login() {
   }
 }
 
-function * subscribeToUsers() {
-  const channel = reduxSagaFirebase.firestore.channel('users')
+function * syncUsers() {
+  const channel = rsf.firestore.channel('users')
 
   while(true) {
     const usersRef = yield take(channel)
     const users = usersRef.docs.map((doc) => doc.data())
 
-    if (users) {      
+    if (users) {
       yield put({
-        type: 'LOAD_USERS_SUCCESS',
+        type: 'SYNC_USERS_SUCCESS',
         users
       })
     }
   }
+}
+
+function * saveUserData() {
+  const user = yield select(state => state.login.user)
+  console.log({ user })
 }
 
 function * logout() {
@@ -59,7 +64,7 @@ function * logout() {
   }
 }
 
-function * syncUser() {
+function * syncUserAuth() {
   const channel = yield call(auth.channel)
 
   while (true) {
@@ -67,12 +72,12 @@ function * syncUser() {
 
     if (user) {
       yield put({
-        type: 'SYNC_USER',
+        type: 'SYNC_USER_AUTH',
         user
       })
     } else {
       yield put({
-        type: 'SYNC_USER',
+        type: 'SYNC_USER_AUTH',
         user: null
       })
     }
@@ -80,11 +85,12 @@ function * syncUser() {
 }
 
 function * All() {
-  yield fork(syncUser)
   yield [
+    fork(syncUserAuth),
     takeEvery('LOGIN_REQUEST', login),
     takeEvery('LOGOUT_REQUEST', logout),
-    takeEvery('SUBSCRIBE_TO_USERS', subscribeToUsers)
+    takeEvery('SYNC_USERS_REQUEST', syncUsers),
+    takeEvery('SAVE_USER_DATA_REQUEST', saveUserData)
   ]
 }
 

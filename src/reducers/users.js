@@ -5,7 +5,7 @@ const initialState = {
 
 function users(state = initialState, action = {}) {
   switch (action.type) {
-    case 'LOAD_USERS_SUCCESS':
+    case 'SYNC_USERS_SUCCESS':
       return {
         ...state,
         users: action.users
