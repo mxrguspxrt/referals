@@ -1,28 +1,56 @@
 import React from 'react'
 import BasePage from 'pages/BasePage'
+import { connect } from 'react-redux'
 
 class Invite extends BasePage {
 
   render() {
+    const loginUsingTwitter = this.loginUsingTwitter.bind(this)
+    const user = this.props.user
+    const referalCode = this.props.match.params.referalCode
+
+    if (user) {
+      return (
+        <div className='page-content'>
+          <div className='small-title'>
+            Sorry, referals are only for new users.
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className='page-content'>
         <div className='small-title'>
-          Welcome to Referals app.
-        </div>
-        <div className='big-title'>
           Your referal is
         </div>
-        <input value='xweoi3' />
-        <h1>
-          Log in to take use of referal
-        </h1>
-        <div className='success-button'>
+        <div className='big-title'>
+           { referalCode }
+        </div>
+
+
+        Log in to take use of referal<br /><br />
+
+        <div className='success-button' onClick={ loginUsingTwitter } >
           Log in with Twitter
         </div>
       </div>
     )
   }
 
+  loginUsingTwitter() {
+    this.dispatch({
+      type: 'LOGIN_REQUEST'
+    })
+  }
+
 }
 
-export default Invite
+function mapStateToProps(state) {
+  return {
+    loading: state.login.loading,
+    user: state.login.user
+  }
+}
+
+export default connect(mapStateToProps)(Invite)

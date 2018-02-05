@@ -15,18 +15,29 @@ class Profile extends BasePage {
       )
     }
 
+    const referalUrl = 'https://referalsyo.firebaseapp.com/invite/' + user.uid
+    const usedReferal = user.usedReferal
+    const followers = user.followers || [] // || [{ displayName: 'yo', uid: '1' }]
+
     return (
       <div className='page-content'>
         <h1>{ user.displayName }</h1>
         <div className='big-title'>
           To invite followers with your referal, share following link.
         </div>
-        <input value='referals.wave.ee/invite/xweoi3' />
+        <input defaultValue={referalUrl} />
         <h2>Registered with referal</h2>
-        abcd4g
-        <h2>Followers (3)</h2>
-        Snow Man Ice Cube<br />
-        Tupskin ALbert<br />
+        { usedReferal ? usedReferal : 'Did not use referal on registration' }
+        <h2>Followers ({ followers.length })</h2>
+        {
+          followers.map((follower) => {
+            return (
+              <div key={follower.uid} className='follower'>
+                { follower.displayName }
+              </div>
+            )
+          })
+        }
       </div>
     )
   }

@@ -4,7 +4,6 @@ import BasePage from 'pages/BasePage'
 class Login extends BasePage {
 
   render() {
-    console.log(this.props)
     const loginUsingTwitter = this.loginUsingTwitter.bind(this)
 
     return (

@@ -1,22 +1,20 @@
 import React from 'react'
 import BasePage from 'pages/BasePage'
 import UserRow from 'components/UserRow'
+import Loading from 'components/Loading'
 import { connect } from 'react-redux'
 
 class Index extends BasePage {
 
-  componentDidMount() {
-    this.dispatch({
-      type: 'SUBSCRIBE_TO_USERS'
-    })
-  }
-
-  componentWillUnmount() {
-    console.log('Unsubscribe from users is not implemented :(')
-  }
-
   render() {
     const users = this.props.users
+    const loading = this.props.loading
+
+    if (loading) {
+      return (
+        <Loading />
+      )
+    }
 
     return (
       <div className='page-content'>
@@ -29,13 +27,12 @@ class Index extends BasePage {
         <div className='table'>
           <div className='header'>
             <div className='cell'>User</div>
-            <div className='cell'>Referal</div>
-            <div className='cell'>Registered with referal</div>
-            <div className='cell'>Followers</div>
+            <div className='cell'>Personal referal</div>
+            <div className='cell'>Used referal</div>
           </div>
           {
             users.map((user) => {
-              return <UserRow user={user} />
+              return <UserRow key={user.uid} user={user} />
             })
           }
         </div>
@@ -47,6 +44,7 @@ class Index extends BasePage {
 
 function mapStateToProps(state) {
   return {
+    loading: state.users.loading,
     users: state.users.users
   }
 }

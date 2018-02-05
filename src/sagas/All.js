@@ -1,4 +1,4 @@
-import { call, put, takeEvery, take, fork, select } from 'redux-saga/effects'
+import { all, call, put, takeEvery, take, fork, select } from 'redux-saga/effects'
 import firebase from 'firebase'
 import createFirebaseConnection from 'initializers/createFirebaseConnection'
 import { push } from 'react-router-redux'
@@ -6,15 +6,17 @@ import { push } from 'react-router-redux'
 const authProvider = new firebase.auth.TwitterAuthProvider()
 const rsf = createFirebaseConnection()
 const auth = rsf.auth
+const firestore = rsf.firestore
 
 function * login() {
   try {
-    const data = yield call(auth.signInWithPopup, authProvider)
+    const authData = yield call(auth.signInWithPopup, authProvider)
 
     yield put({
       type: 'LOGIN_SUCCESS',
-      data: data
+      data: authData
     })
+
     yield put(push('/profile'))
   }
   catch(error) {
@@ -26,7 +28,7 @@ function * login() {
 }
 
 function * syncUsers() {
-  const channel = rsf.firestore.channel('users')
+  const channel = firestore.channel('users')
 
   while(true) {
     const usersRef = yield take(channel)
@@ -39,11 +41,6 @@ function * syncUsers() {
       })
     }
   }
-}
-
-function * saveUserData() {
-  const user = yield select(state => state.login.user)
-  console.log({ user })
 }
 
 function * logout() {
@@ -75,6 +72,13 @@ function * syncUserAuth() {
         type: 'SYNC_USER_AUTH',
         user
       })
+
+      // const activeUser = yield select(state => state.activeUser)
+      // if (!activeUser) {
+      //   const activeUserData = yield call(firestore.getDocument, user.uid)
+      //   console.log({ activeUserData })
+      // }
+
     } else {
       yield put({
         type: 'SYNC_USER_AUTH',
@@ -85,13 +89,12 @@ function * syncUserAuth() {
 }
 
 function * All() {
-  yield [
+  yield all([
     fork(syncUserAuth),
     takeEvery('LOGIN_REQUEST', login),
     takeEvery('LOGOUT_REQUEST', logout),
-    takeEvery('SYNC_USERS_REQUEST', syncUsers),
-    takeEvery('SAVE_USER_DATA_REQUEST', saveUserData)
-  ]
+    takeEvery('SYNC_USERS_REQUEST', syncUsers)
+  ])
 }
 
 export default All

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 // Assets
 import 'assets/styles/apps/Referals.css'
@@ -10,6 +10,7 @@ import ProfilePage from 'pages/Profile'
 import InvitePage from 'pages/Invite'
 
 // Components
+import BaseComponent from 'components/BaseComponent'
 import Header from 'components/Header'
 
 // Redux, store, sagas & routing
@@ -21,7 +22,13 @@ import { Provider } from 'react-redux'
 const { store, history } = createStoreAndHistory()
 
 // Render Referals app
-class Referals extends Component {
+class Referals extends BaseComponent {
+
+  componentDidMount() {
+    this.dispatch({
+      type: 'SYNC_USERS_REQUEST'
+    })
+  }
 
   render() {
     const referalsView = (
@@ -32,7 +39,7 @@ class Referals extends Component {
             <Route exact path="/" component={IndexPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/profile" component={ProfilePage} />
-            <Route path="/invite" component={InvitePage} />
+            <Route path="/invite/:referalCode" component={InvitePage} />
           </div>
         </ConnectedRouter>
       </Provider>

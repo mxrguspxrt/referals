@@ -8,7 +8,13 @@ function users(state = initialState, action = {}) {
     case 'SYNC_USERS_SUCCESS':
       return {
         ...state,
-        users: action.users
+        users: action.users,
+        loading: false
+      }
+    case 'SYNC_USERS_REQUEST':
+      return {
+        ...state,
+        loading: true
       }
     default:
       return state
