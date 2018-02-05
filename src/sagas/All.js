@@ -10,6 +10,7 @@ const auth = reduxSagaFirebase.auth
 function * login() {
   try {
     const data = yield call(auth.signInWithPopup, authProvider)
+
     yield put({
       type: 'LOGIN_SUCCESS',
       data: data
@@ -21,6 +22,22 @@ function * login() {
       type: 'LOGIN_FAILURE',
       error: error
     })
+  }
+}
+
+function * subscribeToUsers() {
+  const channel = reduxSagaFirebase.firestore.channel('users')
+
+  while(true) {
+    const usersRef = yield take(channel)
+    const users = usersRef.docs.map((doc) => doc.data())
+
+    if (users) {      
+      yield put({
+        type: 'LOAD_USERS_SUCCESS',
+        users
+      })
+    }
   }
 }
 
@@ -66,7 +83,8 @@ function * All() {
   yield fork(syncUser)
   yield [
     takeEvery('LOGIN_REQUEST', login),
-    takeEvery('LOGOUT_REQUEST', logout)
+    takeEvery('LOGOUT_REQUEST', logout),
+    takeEvery('SUBSCRIBE_TO_USERS', subscribeToUsers)
   ]
 }
 

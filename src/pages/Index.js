@@ -1,9 +1,23 @@
 import React from 'react'
 import BasePage from 'pages/BasePage'
+import UserRow from 'components/UserRow'
+import { connect } from 'react-redux'
 
 class Index extends BasePage {
 
+  componentDidMount() {
+    this.dispatch({
+      type: 'SUBSCRIBE_TO_USERS'
+    })
+  }
+
+  componentWillUnmount() {
+    console.log('Unsubscribe from users is not implemented :(')
+  }
+
   render() {
+    const users = this.props.users
+
     return (
       <div className='page-content'>
         <div className='small-title'>
@@ -19,12 +33,11 @@ class Index extends BasePage {
             <div className='cell'>Registered with referal</div>
             <div className='cell'>Followers</div>
           </div>
-          <div className='row'>
-            <div className='cell'>Margus Pärt</div>
-            <div className='cell'>2093dj2</div>
-            <div className='cell'>9302932</div>
-            <div className='cell'>Jesus Christ, Superman, Robin</div>
-          </div>
+          {
+            users.map((user) => {
+              return <UserRow user={user} />
+            })
+          }
         </div>
       </div>
     )
@@ -32,4 +45,10 @@ class Index extends BasePage {
 
 }
 
-export default Index
+function mapStateToProps(state) {
+  return {
+    users: state.users.users
+  }
+}
+
+export default connect(mapStateToProps)(Index)
