@@ -3,6 +3,15 @@ import firebase from 'firebase'
 import createFirebaseConnection from 'initializers/createFirebaseConnection'
 import { push } from 'react-router-redux'
 
+import {
+  loginFailure,
+  loginSuccess,
+  logoutFailure,
+  logoutSuccess,
+  syncUserAuthSuccess,
+  syncUsersSuccess
+} from 'actions/All'
+
 const authProvider = new firebase.auth.TwitterAuthProvider()
 const rsf = createFirebaseConnection()
 const auth = rsf.auth
@@ -40,20 +49,11 @@ function * login(action) {
 
     const user = loadedUser || newUser
 
-    console.log('User is', user)
-
-    yield put({
-      type: 'LOGIN_SUCCESS',
-      user: user
-    })
-
+    yield put(loginSuccess(user))
     yield put(push('/profile'))
   }
   catch(error) {
-    yield put({
-      type: 'LOGIN_FAILURE',
-      error: error
-    })
+    yield put(loginFailure(error))
   }
 }
 
@@ -65,10 +65,7 @@ function * syncUsers() {
     const users = usersRef.docs.map((doc) => doc.data())
 
     if (users) {
-      yield put({
-        type: 'SYNC_USERS_SUCCESS',
-        users
-      })
+      yield put(syncUsersSuccess(users))
     }
   }
 }
@@ -76,17 +73,11 @@ function * syncUsers() {
 function * logout() {
   try {
     const data = yield call(auth.signOut)
-    yield put({
-      type: 'LOGOUT_SUCCESS',
-      data: data
-    })
+    yield put(logoutSuccess(data))
     yield put(push('/'))
   }
   catch(error) {
-    yield put({
-      type: 'LOGOUT_FAILURE',
-      error: error
-    })
+    yield put(logoutFailure(error))
   }
 }
 
@@ -97,10 +88,7 @@ function * syncUserAuth() {
     const firebaseUser = (yield take(channel)).user
     const user = firebaseUser && (yield loadUser(firebaseUser.uid))
 
-    yield put({
-      type: 'SYNC_USER_AUTH',
-      user
-    })
+    yield put(syncUserAuthSuccess(user))
   }
 }
 

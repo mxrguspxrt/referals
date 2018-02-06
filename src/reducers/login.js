@@ -22,6 +22,7 @@ function login(state = initialState, action = {}) {
     case 'LOGIN_FAILURE':
       return {
         ...state,
+        error: action.error,
         loading: false
       }
     case 'LOGOUT_SUCCESS':
@@ -35,7 +36,7 @@ function login(state = initialState, action = {}) {
         ...state,
         loading: false
       }
-    case 'SYNC_USER_AUTH':
+    case 'SYNC_USER_AUTH_SUCCESS':
       return {
         ...state,
         loggedIn: action.user != null,
