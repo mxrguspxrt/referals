@@ -12,12 +12,25 @@ function * login(action) {
   const referalCode = action.referalCode
 
   try {
-    const authData = yield call(auth.signInWithPopup, authProvider)
+    yield call(auth.signInWithPopup, authProvider)
     // you cant change fields on Firebase user, so duplicate is created with function hook
     const firebaseCurrentUser = firebase.auth().currentUser
     // load user that was created by hook
-    const userRef = yield call(firestore.getDocument, 'users/nOVUKxWT0uVvCaSB0Uh4')
-    const user = userRef.data()
+    const loadedUserRef = yield call(firestore.getDocument, 'users/' + firebaseCurrentUser.uid)
+    const loadedUser = loadedUserRef.data()
+    let newUser = null
+
+    if (!loadedUser) {
+      const newUserParams = {
+        uid: firebaseCurrentUser.uid,
+        name: firebaseCurrentUser.displayName,
+        usedReferalCode: referalCode
+      }
+      const newUserRef = yield call(firestore.setDocument, 'users/' + firebaseCurrentUser.uid, newUserParams)
+      newUser = newUserRef.data()
+    }
+
+    const user = loadedUser || newUser
 
     console.log('User is', user)
 
