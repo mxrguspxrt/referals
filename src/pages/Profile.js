@@ -6,6 +6,7 @@ class Profile extends BasePage {
 
   render() {
     const user = this.props.user
+    const users = this.props.users
 
     if (!user) {
       return (
@@ -16,8 +17,8 @@ class Profile extends BasePage {
     }
 
     const referalUrl = 'https://referalsyo.firebaseapp.com/invite/' + user.uid
-    const usedReferal = user.usedReferal
-    const followers = user.followers || [] // || [{ displayName: 'yo', uid: '1' }]
+    const usedReferalCode = user.usedReferalCode
+    const followers = users.filter(u => u.usedReferalCode === user.uid)
 
     return (
       <div className='page-content'>
@@ -27,7 +28,7 @@ class Profile extends BasePage {
         </div>
         <input defaultValue={referalUrl} />
         <h2>Registered with referal</h2>
-        { usedReferal ? usedReferal : 'Did not use referal on registration' }
+        { usedReferalCode ? usedReferalCode : 'Did not use referal on registration' }
         <h2>Followers ({ followers.length })</h2>
         {
           followers.map((follower) => {
@@ -46,7 +47,8 @@ class Profile extends BasePage {
 
 function mapStateToProps(state) {
   return {
-    user: state.login.user
+    user: state.login.user,
+    users: state.users.users
   }
 }
 

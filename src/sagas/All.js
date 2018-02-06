@@ -8,6 +8,16 @@ const rsf = createFirebaseConnection()
 const auth = rsf.auth
 const firestore = rsf.firestore
 
+function * loadUser(uid) {
+  const loadedUserRef = yield call(firestore.getDocument, 'users/' + uid)
+  const loadedUser = loadedUserRef.data()
+  return loadedUser
+}
+
+function * createUser(params) {
+  return yield call(firestore.setDocument, 'users/' + params.uid, params)
+}
+
 function * login(action) {
   const referalCode = action.referalCode
 
@@ -16,18 +26,16 @@ function * login(action) {
     // you cant change fields on Firebase user, so duplicate is created with function hook
     const firebaseCurrentUser = firebase.auth().currentUser
     // load user that was created by hook
-    const loadedUserRef = yield call(firestore.getDocument, 'users/' + firebaseCurrentUser.uid)
-    const loadedUser = loadedUserRef.data()
+    const loadedUser = yield loadUser(firebaseCurrentUser.uid)
     let newUser = null
 
     if (!loadedUser) {
-      const newUserParams = {
+      newUser = {
         uid: firebaseCurrentUser.uid,
-        name: firebaseCurrentUser.displayName,
-        usedReferalCode: referalCode
+        displayName: firebaseCurrentUser.displayName,
+        usedReferalCode: referalCode || null
       }
-      const newUserRef = yield call(firestore.setDocument, 'users/' + firebaseCurrentUser.uid, newUserParams)
-      newUser = newUserRef.data()
+      yield createUser(newUser)
     }
 
     const user = loadedUser || newUser
@@ -36,12 +44,7 @@ function * login(action) {
 
     yield put({
       type: 'LOGIN_SUCCESS',
-      data: user
-    })
-
-    yield put({
-      type: 'CONNECT_USER_WITH_REFERAL_REQUEST',
-      referalCode: referalCode
+      user: user
     })
 
     yield put(push('/profile'))
@@ -91,7 +94,8 @@ function * syncUserAuth() {
   const channel = yield call(auth.channel)
 
   while (true) {
-    const { user } = yield take(channel)
+    const firebaseUser = (yield take(channel)).user
+    const user = firebaseUser && (yield loadUser(firebaseUser.uid))
 
     yield put({
       type: 'SYNC_USER_AUTH',
@@ -100,15 +104,11 @@ function * syncUserAuth() {
   }
 }
 
-function * connectUserWithReferal() {
-
-}
 
 function * All() {
   yield all([
     fork(syncUserAuth),
     takeEvery('LOGIN_REQUEST', login),
-    takeEvery('CONNECT_USER_WITH_REFERAL_REQUEST', connectUserWithReferal),
     takeEvery('LOGOUT_REQUEST', logout),
     takeEvery('SYNC_USERS_REQUEST', syncUsers)
   ])

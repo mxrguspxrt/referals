@@ -10,7 +10,7 @@ class UserRow extends BaseComponent {
       <div className='row'>
         <div className='cell'>{user.displayName}</div>
         <div className='cell'>{user.uid}</div>
-        <div className='cell'>{user.usedReferal}</div>
+        <div className='cell'>{user.usedReferalCode}</div>
       </div>
     )
   }

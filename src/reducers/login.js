@@ -15,6 +15,7 @@ function login(state = initialState, action = {}) {
     case 'LOGIN_SUCCESS':
       return {
         ...state,
+        user: action.user,
         loading: false,
         loggedIn: true
       }
