@@ -31,16 +31,17 @@ class Invite extends BasePage {
 
         Log in to take use of referal<br /><br />
 
-        <div className='success-button' onClick={ loginUsingTwitter } >
+        <div className='success-button' onClick={ () => loginUsingTwitter(referalCode) } >
           Log in with Twitter
         </div>
       </div>
     )
   }
 
-  loginUsingTwitter() {
+  loginUsingTwitter(referalCode) {
     this.dispatch({
-      type: 'LOGIN_REQUEST'
+      type: 'LOGIN_REQUEST',
+      referalCode
     })
   }
 

@@ -1,16 +1,20 @@
 const functions = require('firebase-functions');
-
 const admin = require('firebase-admin');
+
 admin.initializeApp(functions.config().firebase);
+const firestore = admin.firestore()
+const Users = firestore.collection('users')
 
 exports.createUserWithDefaultReferal = functions.auth.user().onCreate(event => {
   const user = event.data;
   const uid = user.uid;
 
   const userParams = {
-    uid: user.uid,
+    uid: uid,
     displayName: user.displayName,
-    usedReferal: null
+    usedReferal: null,
+    hasLoggedIn: false
   }
-  return admin.firestore().collection('users').add(userParams)
+
+  return Users.doc(uid).set(userParams)
 });
