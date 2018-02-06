@@ -3,7 +3,8 @@
   margin: 0;
   font-weight: 100;
   box-sizing: border-box;
-  word-wrap: break-word;
+  word-wrap: normal;
+  word-break: normal;
   max-width: 100%;
 }
 
@@ -41,7 +42,7 @@ body {
 }
 
 .table {
-  width: 100%;
+  max-width: 100%;
   margin-top: 50px;
   margin-bottom: 50px;
   display: table;
@@ -60,6 +61,7 @@ body {
 }
 
 .table .cell {
+  word-break: break-all;
   display: table-cell;
   vertical-align: middle;
   padding: 4px;

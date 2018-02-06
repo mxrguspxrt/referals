@@ -1,6 +1,7 @@
 import React from 'react'
 import BasePage from 'pages/BasePage'
 import { connect } from 'react-redux'
+import config from 'configs/referals'
 
 class Profile extends BasePage {
 
@@ -16,7 +17,7 @@ class Profile extends BasePage {
       )
     }
 
-    const referalUrl = 'https://referalsyo.firebaseapp.com/invite/' + user.uid
+    const referalUrl = config.siteUrl + '/invite/' + user.uid
     const usedReferalCode = user.usedReferalCode
     const followers = users.filter(u => u.usedReferalCode === user.uid)
 
