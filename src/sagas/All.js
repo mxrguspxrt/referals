@@ -32,9 +32,7 @@ function * login(action) {
 
   try {
     yield call(auth.signInWithPopup, authProvider)
-    // you cant change fields on Firebase user, so duplicate is created with function hook
     const firebaseCurrentUser = firebase.auth().currentUser
-    // load user that was created by hook
     const loadedUser = yield loadUser(firebaseCurrentUser.uid)
     let newUser = null
 
